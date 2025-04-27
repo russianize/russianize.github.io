@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOS</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background: black;
+      font-family: 'Courier New', monospace;
+      color: #FF0000;
+      text-align: center;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+    }
+    h1 {
+      margin-top: 60px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #FF0000;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .photo-item {
+      background-color: rgba(0,0,0,0.5);
+      padding: 15px;
+      border: 2px solid #FF0000;
+      border-radius: 10px;
+    }
+    .photo-item img {
+      width: 100%;
+      height: auto;
+      border: 2px solid #FF0000;
+      margin-bottom: 10px;
+    }
+    .photo-item p {
+      font-size: 16px;
+    }
+    a.back-button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      border: 2px solid #FF0000;
+      color: #FF0000;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    a.back-button:hover {
+      background-color: #FF0000;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="content">
+  <h1>Hall of Shots (HOS)</h1>
+
+  <div class="photo-grid">
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+1" alt="Photo 1">
+      <p>Description for Photo 1</p>
+    </div>
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+2" alt="Photo 2">
+      <p>Description for Photo 2</p>
+    </div>
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+3" alt="Photo 3">
+      <p>Description for Photo 3</p>
+    </div>
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+4" alt="Photo 4">
+      <p>Description for Photo 4</p>
+    </div>
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+5" alt="Photo 5">
+      <p>Description for Photo 5</p>
+    </div>
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+6" alt="Photo 6">
+      <p>Description for Photo 6</p>
+    </div>
+    <div class="photo-item">
+      <img src="https://via.placeholder.com/300x200/FF0000/000000?text=Photo+7" alt="Photo 7">
+      <p>Description for Photo 7</p>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-button">Back to Home</a>
+</div>
+
+<script>
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+
+  const letters = '01';
+  const fontSize = 14;
+  let columns;
+  let drops;
+
+  function setupMatrix() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    columns = Math.floor(canvas.width / fontSize);
+    drops = [];
+
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+  }
+
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#FF0000';
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  setupMatrix();
+  setInterval(drawMatrix, 33);
+
+  window.addEventListener('resize', setupMatrix);
+</script>
+
+</body>
+</html>
